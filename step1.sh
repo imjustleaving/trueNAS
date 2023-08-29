@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SERVER_IP=192.168.1.169
+POOL_NAME=tank
+
 # Check if the script is being run as root
 if [ "$(id -u)" -ne 0 ]; then
   echo "This script must be run as root."
@@ -81,7 +84,7 @@ echo "User & Group apps created!"
 
 #Mount TrueNAS NFS Share
 sudo apt-get install nfs-common
-echo "192.168.1.179:/mnt/bigdeal /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
+echo "$SERVER_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 echo "Mounted TrueNAS!"
 
@@ -99,4 +102,3 @@ sudo docker network create arr && echo "Docker network 'arr' created."
 #add jq package
 sudo apt install jq -y
 echo "Added jq apt package!"
-
