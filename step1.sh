@@ -83,7 +83,7 @@ sudo useradd -u 568 -g 568 -m -s /bin/bash apps
 echo "User & Group apps created!"
 
 #Mount TrueNAS NFS Share
-sudo apt-get install nfs-common
+sudo apt-get install nfs-common -y
 echo "$TRUENAS_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 echo "Mounted TrueNAS!"
