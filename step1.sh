@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER_IP=192.168.1.169
+TRUENAS_IP=192.168.1.169
 POOL_NAME=tank
 
 # Check if the script is being run as root
@@ -84,7 +84,7 @@ echo "User & Group apps created!"
 
 #Mount TrueNAS NFS Share
 sudo apt-get install nfs-common
-echo "$SERVER_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
+echo "$TRUENAS_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 echo "Mounted TrueNAS!"
 
