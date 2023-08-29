@@ -472,8 +472,8 @@ radarr:
 EOF
 
 
-echo "Shell into recyclarr and enter the command 'recyclarr sync radarr'"
-echo "Shell into recyclarr and enter the command 'recyclarr sync sonarr'"
+echo "Next, enter the command 'recyclarr sync radarr'"
+echo "Last, enter the command 'recyclarr sync sonarr'"
 read -p "Press Enter when completed..."
 
 
