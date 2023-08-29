@@ -476,4 +476,6 @@ echo "Next, enter the command 'recyclarr sync radarr'"
 echo "Last, enter the command 'recyclarr sync sonarr'"
 read -p "Press Enter when completed..."
 
-
+#api key output
+echo "Your Sonarr API Key is $sonarr_api_key"
+echo "Your Radarr API Key is $radarr_api_key"
