@@ -35,7 +35,7 @@ curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/se
 echo "Downloading Webmin."
 
 # Execute the setup-repos.sh script
-sh setup-repos.sh
+yes | sh setup-repos.sh
 
 # Install Webmin
 echo "Installing Webmin."
