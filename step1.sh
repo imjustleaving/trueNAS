@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TRUENAS_IP=192.168.1.169
+TRUENAS_IP=
 POOL_NAME=tank
 
 # Check if the script is being run as root
@@ -83,10 +83,14 @@ sudo useradd -u 568 -g 568 -m -s /bin/bash apps
 echo "User & Group apps created!"
 
 #Mount TrueNAS NFS Share
-sudo apt-get install nfs-common -y
-echo "$TRUENAS_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
-sudo mount -a
-echo "Mounted TrueNAS!"
+if [ -n "$TRUENAS_IP" ]; then
+  sudo apt-get install nfs-common -y
+  echo "$TRUENAS_IP:/mnt/$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
+  sudo mount -a
+  echo "Mounted TrueNAS!"
+else
+  echo "TRUENAS_IP variable is not defined. Skipping mounting of TrueNAS NFS share."
+fi
 
 #Build media directory structure
 sudo mkdir -p /media/{downloads,movies,tv}
