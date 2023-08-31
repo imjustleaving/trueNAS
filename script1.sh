@@ -935,9 +935,9 @@ EOF
 
 sleep 1
 sudo docker exec recyclarr recyclarr sync radarr
-sleep 3
+sleep 5
 sudo docker exec recyclarr recyclarr sync sonarr
-sleep 3
+sleep 5
 
 #api key output
 echo "Your Sonarr API Key is $sonarr_api_key"
