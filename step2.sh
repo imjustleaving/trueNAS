@@ -562,7 +562,7 @@ dir_mode = "0755"
 
 [[sonarr]]
  url = "http://sonarr:8989"
- api_key = "$SONARR_API_KEY"
+ api_key = $SONARR_API_KEY
 ## File system path where downloaded Sonarr items are located.
  paths = ['/media/downloads']
 ## Default protocols is torrent. Alternative: "torrent,usenet"
@@ -575,7 +575,7 @@ dir_mode = "0755"
 
 [[radarr]]
  url = "http://radarr:7878"
- api_key = "$RADARR_API_KEY"
+ api_key = $RADARR_API_KEY
 ## File system path where downloaded Radarr items are located.
  paths = ['/media/downloads']
 ## Default protocols is torrents. Alternative: "torrent,usenet"
@@ -596,7 +596,7 @@ dir_mode = "0755"
 # Can possibly be used with other services by providing a custom template_path.
 ###### Don't forget to uncomment [[webhook]] and url at a minimum !!!!
 [[webhook]]
- url    = "$DISCORD_WEBHOOK"
+ url    = $DISCORD_WEBHOOK
  name   = ""    # Set this to hide the URL in logs.
  silent = false # do not log success (less log spam)
  events = [0]   # list of event ids to include, 0 == all.
