@@ -171,7 +171,7 @@ services:
       # Sonarr Config
       - UN_SONARR_0_URL=http://sonarr:8989
       - UN_SONARR_0_API_KEY=
-      - UN_SONARR_0_PATHS_0=/downloads
+      - UN_SONARR_0_PATHS_0=/media/downloads
       - UN_SONARR_0_PROTOCOLS=torrent
       - UN_SONARR_0_TIMEOUT=10s
       - UN_SONARR_0_DELETE_ORIG=false
@@ -179,7 +179,7 @@ services:
       # Radarr Config
       - UN_RADARR_0_URL=http://radarr:7878
       - UN_RADARR_0_API_KEY=
-      - UN_RADARR_0_PATHS_0=/downloads
+      - UN_RADARR_0_PATHS_0=/media/downloads
       - UN_RADARR_0_PROTOCOLS=torrent
       - UN_RADARR_0_TIMEOUT=10s
       - UN_RADARR_0_DELETE_ORIG=false
