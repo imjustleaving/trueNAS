@@ -611,24 +611,6 @@ dir_mode = "0755"
 # content_type  = "application/json" # If your custom template uses another MIME type, set this.
 
 
-#####################
-### Command Hooks ###
-#####################
-# Executes a script or command when an extraction queues, starts, finishes, and/or is deleted.
-# All data is passed in as environment variables. Try /usr/bin/env to see what variables are available.
-###### Don't forget to uncomment [[cmdhook]] and url at a minimum !!!!
-#[[cmdhook]]
-# command = '/my/cool/app' # Path to command or script.
-# shell   = false # Runs the command inside /bin/sh ('nix) or cmd.exe (Windows).
-# name    = ""    # Provide an optional name for logging.
-# silent  = false # Hides command output from logs.
-# events  = [0]   # list of event ids to include, 0 == all.
-## Optional Command Hook Configuration
-# exclude       = []    # list of apps to exclude, ie. ["radarr", "lidarr"]
-# timeout       = "10s" # You can adjust how long to wait for a server response.
-
-
-
 EOT
 
 sudo docker restart unpackerr
