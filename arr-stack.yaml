@@ -148,55 +148,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   unpackerr:
-    image: golift/unpackerr
     container_name: unpackerr
-    volumes:
-      - ${DOWNLOADS_PATH}:/media/downloads
-    restart: always
-    user: 568:568
+    image: ghcr.io/hotio/unpackerr
     environment:
+      - PUID=568
+      - PGID=568
+      - UMASK=002
       - TZ=${TIMEZONE}
-      # General config
-      - UN_DEBUG=false
-      - UN_LOG_FILE=
-      - UN_LOG_FILES=10
-      - UN_LOG_FILE_MB=10
-      - UN_INTERVAL=2m
-      - UN_START_DELAY=1m
-      - UN_RETRY_DELAY=5m
-      - UN_MAX_RETRIES=3
-      - UN_PARALLEL=1
-      - UN_FILE_MODE=0644
-      - UN_DIR_MODE=0755
-      # Sonarr Config
-      - UN_SONARR_0_URL=http://sonarr:8989
-      - UN_SONARR_0_API_KEY=
-      - UN_SONARR_0_PATHS_0=/media/downloads
-      - UN_SONARR_0_PROTOCOLS=torrent
-      - UN_SONARR_0_TIMEOUT=10s
-      - UN_SONARR_0_DELETE_ORIG=false
-      - UN_SONARR_0_DELETE_DELAY=5m
-      # Radarr Config
-      - UN_RADARR_0_URL=http://radarr:7878
-      - UN_RADARR_0_API_KEY=
-      - UN_RADARR_0_PATHS_0=/media/downloads
-      - UN_RADARR_0_PROTOCOLS=torrent
-      - UN_RADARR_0_TIMEOUT=10s
-      - UN_RADARR_0_DELETE_ORIG=false
-      - UN_RADARR_0_DELETE_DELAY=5m
-      # Webhook Config
-      - UN_WEBHOOK_0_URL=${DISCORD_WEBHOOK}
-      - UN_WEBHOOK_0_NAME=Unpackerr/Discord
-      - UN_WEBHOOK_0_NICKNAME=Unpackerr
-      - UN_WEBHOOK_0_CHANNEL=
-      - UN_WEBHOOK_0_TIMEOUT=10s
-      - UN_WEBHOOK_0_SILENT=false
-      - UN_WEBHOOK_0_IGNORE_SSL=false
-      - UN_WEBHOOK_0_EXCLUDE_0=
-      - UN_WEBHOOK_0_EVENTS_0=0
-      - UN_WEBHOOK_0_TEMPLATE_PATH=discord
-      - UN_WEBHOOK_0_CONTENT_TYPE=application/json
-
+    volumes:
+      - ${CONFIG_PATH}/unpackerr:/config
     networks:
       - arr
     security_opt:
