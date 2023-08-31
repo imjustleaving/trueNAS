@@ -476,6 +476,164 @@ echo "Next, enter the command 'recyclarr sync radarr'"
 echo "Last, enter the command 'recyclarr sync sonarr'"
 read -p "Press Enter when completed..."
 
+#configure unpackerr
+
+cat <<EOT > $base_directory/configs/unpackerr/unpackerr.conf
+##      Unpackerr Example Configuration File      ##
+## The following values are application defaults. ##
+## Environment Variables may override all values. ##
+####################################################
+
+# [true/false] Turn on debug messages in the output. Do not wrap this in quotes.
+# Recommend trying this so you know what it looks like. I personally leave it on.
+debug = false
+
+# Disable writing messages to stdout. This silences the app. You should set a log
+# file below if you set this to true. Recommended when starting with systemctl.
+quiet = false
+
+# Setting activity to true will silence all app queue log lines with only zeros.
+# Set this to true when you want less log spam.
+activity = false
+
+# The application queue data is logged on an interval. Adjust that interval with this setting.
+# Default is a minute. 2m, 5m, 10m, 30m, 1h are also perfectly acceptable.
+log_queues = "1m"
+
+# Write messages to a log file. This is the same data that is normally output to stdout.
+# This setting is great for Docker users that want to export their logs to a file.
+# The alternative is to use syslog to log the output of the application to a file.
+# Default is no log file; this is unset. log_files=0 turns off auto-rotation.
+# Default files is 10 and size(mb) is 10 Megabytes; both doubled if debug is true.
+#log_file = '/downloads/unpackerr.log'
+log_files = 10
+log_file_mb = 10
+
+# How often to poll sonarr and radarr.
+# Recommend 1m-5m. Uses Go Duration.
+interval = "1m"
+
+# How long an item must be queued (download complete) before extraction will start.
+# One minute is the historic default and works well. Set higher if your downloads
+# take longer to finalize (or transfer locally). Uses Go Duration.
+start_delay = "1m"
+
+# How long to wait before removing the history for a failed extraction.
+# Once the history is deleted the item will be recognized as new and
+# extraction will start again. Uses Go Duration.
+retry_delay = "5m"
+
+# How many files may be extracted in parallel. 1 works fine.
+# Do not wrap the number in quotes. Raise this only if you have fast disks and CPU.
+parallel = 1
+
+# Use these configurations to control the file modes used for newly extracted
+# files and folders. Recommend 0644/0755 or 0666/0777.
+file_mode = "0644"
+dir_mode = "0755"
+
+[webserver]
+## The web server currently only supports metrics; set this to true if you wish to use it.
+  metrics = false
+## This may be set to a port or an ip:port to bind a specific IP. 0.0.0.0 binds ALL IPs.
+  listen_addr = "0.0.0.0:5656"
+## Recommend setting a log file for HTTP requests. Otherwise, they go with other logs.
+  log_file = ""
+## This app automatically rotates logs. Set these to the size and number to keep.
+  log_files = 10
+  log_file_mb = 10
+## Set both of these to valid file paths to enable HTTPS/TLS.
+  ssl_cert_file = ""
+  ssl_key_file = ""
+## Base URL from which to serve content.
+  urlbase = "/"
+## Upstreams should be set to the IP or CIDR of your trusted upstream proxy.
+## Setting this correctly allows X-Forwarded-For to be used in logs.
+## In the future it may control auth proxy trust. Must be a list of strings.
+  upstreams = [ ] # example: upstreams = [ "127.0.0.1/32", "10.1.2.0/24" ]
+
+##-Notes-#######-READ THIS!!!-##################################################
+## The following sections can be repeated if you have more than one Sonarr,   ##
+## Radarr or Lidarr, Readarr, Folder, Webhook, or Command Hook.               ##
+## You MUST uncomment the [[header]] and api_key at a minimum for Starr apps. ##
+##                ALL LINES BEGINNING WITH A HASH # ARE IGNORED               ##
+##            REMOVE THE HASH # FROM CONFIG LINES YOU WANT TO CHANGE          ##
+################################################################################
+
+[[sonarr]]
+ url = "http://sonarr:8989"
+ api_key = "$SONARR_API_KEY"
+## File system path where downloaded Sonarr items are located.
+ paths = ['/media/downloads']
+## Default protocols is torrent. Alternative: "torrent,usenet"
+ protocols = "torrent"
+## How long to wait for a reply from the backend.
+ timeout = "10s"
+## How long to wait after import before deleting the extracted items.
+ delete_delay = "5m"
+
+
+[[radarr]]
+ url = "http://radarr:7878"
+ api_key = "$RADARR_API_KEY"
+## File system path where downloaded Radarr items are located.
+ paths = ['/media/downloads']
+## Default protocols is torrents. Alternative: "torrent,usenet"
+ protocols = "torrent"
+## How long to wait for a reply from the backend.
+ timeout = "10s"
+## How long to wait after import before deleting the extracted items.
+ delete_delay = "5m"
+
+
+
+################
+### Webhooks ###
+################
+# Sends a webhook when an extraction queues, starts, finishes, and/or is deleted.
+# Created to integrate with notifiarr.com.
+# Also works natively with Discord.com, Telegram.org, and Slack.com webhooks.
+# Can possibly be used with other services by providing a custom template_path.
+###### Don't forget to uncomment [[webhook]] and url at a minimum !!!!
+[[webhook]]
+ url    = "$DISCORD_WEBHOOK"
+ name   = ""    # Set this to hide the URL in logs.
+ silent = false # do not log success (less log spam)
+ events = [0]   # list of event ids to include, 0 == all.
+## Advanced Optional Webhook Configuration
+# nickname      = ""    # Used in Discord and Slack templates as bot name, in Telegram as chat_id.
+# channel       = ""    # Also passed into templates. Used in Slack templates for destination channel.
+# exclude       = []    # list of apps to exclude, ie. ["radarr", "lidarr"]
+# template_path = ""    # Override internal webhook template for discord.com or other hooks.
+ template      = "discord"    # Override automatic template detection. Values: notifiarr, discord, telegram, gotify, pushover, slack
+# ignore_ssl    = false # Set this to true to ignore the SSL certificate on the server.
+# timeout       = "10s" # You can adjust how long to wait for a server response.
+# content_type  = "application/json" # If your custom template uses another MIME type, set this.
+
+
+#####################
+### Command Hooks ###
+#####################
+# Executes a script or command when an extraction queues, starts, finishes, and/or is deleted.
+# All data is passed in as environment variables. Try /usr/bin/env to see what variables are available.
+###### Don't forget to uncomment [[cmdhook]] and url at a minimum !!!!
+#[[cmdhook]]
+# command = '/my/cool/app' # Path to command or script.
+# shell   = false # Runs the command inside /bin/sh ('nix) or cmd.exe (Windows).
+# name    = ""    # Provide an optional name for logging.
+# silent  = false # Hides command output from logs.
+# events  = [0]   # list of event ids to include, 0 == all.
+## Optional Command Hook Configuration
+# exclude       = []    # list of apps to exclude, ie. ["radarr", "lidarr"]
+# timeout       = "10s" # You can adjust how long to wait for a server response.
+
+
+
+EOT
+
+
+
+
 #api key output
 echo "Your Sonarr API Key is $sonarr_api_key"
 echo "Your Radarr API Key is $radarr_api_key"
