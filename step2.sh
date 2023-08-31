@@ -631,6 +631,8 @@ dir_mode = "0755"
 
 EOT
 
+sudo docker restart unpackerr
+
 
 
 
