@@ -342,21 +342,12 @@ qbittorrent_url="http://qbittorrent:8080"
 qbittorrent_username="admin"
 qbittorrent_password="adminadmin"
 
-# sets config path based on whether or not POOL_NAME is populated
-
-if [ -n "$POOL_NAME" ]; then
-  # Update the path when POOL_NAME is populated
-  config_path="/mnt/configs"
-else
-  # Use the original path when POOL_NAME is empty
-  config_path="/configs/"
-fi
 
 # Prowlarr API Key extract
 # Check if the configuration file exists
-if [ -f "$config_path/prowlarr/config.xml" ]; then
+if [ -f "$CONFIG_PATH/prowlarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/prowlarr/config.xml")
+  prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/prowlarr/config.xml")
 
   if [ -n "$prowlarr_api_key" ]; then
     echo "Prowlarr API Key: $prowlarr_api_key"
@@ -374,9 +365,9 @@ sleep 5
 
 # Sonarr API Key extract
 # Check if the configuration file exists
-if [ -f "$config_path/sonarr/config.xml" ]; then
+if [ -f "$CONFIG_PATH/sonarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  sonarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/sonarr/config.xml")
+  sonarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/sonarr/config.xml")
 
   if [ -n "$sonarr_api_key" ]; then
     echo "Sonarr API Key: $sonarr_api_key"
@@ -393,9 +384,9 @@ fi
 
 # Radarr API Key extract
 # Check if the configuration file exists
-if [ -f "$config_path/radarr/config.xml" ]; then
+if [ -f "$CONFIG_PATH/radarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  radarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/radarr/config.xml")
+  radarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/radarr/config.xml")
 
   if [ -n "$radarr_api_key" ]; then
     echo "Radarr API Key: $radarr_api_key"
@@ -546,8 +537,8 @@ WebUI\Username=admin
 AutoDownloader\DownloadRepacks=true
 "
 
-echo "$new_config" > "$config_path/qbit/config/qBittorrent.conf"
-echo "$wireguard_conf" > "$config_path/qbit/wireguard/wg0.conf"
+echo "$new_config" > "$CONFIG_PATH/qbit/config/qBittorrent.conf"
+echo "$wireguard_conf" > "$CONFIG_PATH/qbit/wireguard/wg0.conf"
 sudo docker start qbittorrent
 sleep 3
 
@@ -715,13 +706,13 @@ sudo docker start unpackerr
 
 
 #recyclarr setup
-chown apps:apps -R $config_path/recyclarr
+sudo chown apps:apps -R $CONFIG_PATH/recyclarr
 
 
 sudo docker exec recyclarr recyclarr config create
 
 
-cat <<EOF > $config_path/recyclarr/recyclarr.yml
+cat <<EOF > $CONFIG_PATH/recyclarr/recyclarr.yml
 # Configuration specific to Sonarr
 sonarr:
   series:
@@ -946,4 +937,3 @@ sleep 5
 #api key output
 echo "Your Sonarr API Key is $sonarr_api_key"
 echo "Your Radarr API Key is $radarr_api_key"
-
