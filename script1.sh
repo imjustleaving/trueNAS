@@ -139,7 +139,7 @@ echo "User & Group apps created!"
 #Mount TrueNAS NFS Share
 if [ -n "$TRUENAS_IP" ]; then
   sudo apt-get install nfs-common -y
-  echo "$TRUENAS_IP:$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
+  echo "$TRUENAS_IP:/mnt$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
   sudo mount -a
   echo "Mounted TrueNAS!"
 else
@@ -156,10 +156,6 @@ echo "Media directory structure created!"
 
 #create docker network called group
 sudo docker network create arr && echo "Docker network 'arr' created."
-
-#add jq package
-sudo apt install jq -y
-echo "Added jq apt package!"
 
 #deploy arr stack containers
 
@@ -346,13 +342,21 @@ qbittorrent_url="http://qbittorrent:8080"
 qbittorrent_username="admin"
 qbittorrent_password="adminadmin"
 
+# sets config path based on whether or not POOL_NAME is populated
+
+if [ -n "$POOL_NAME" ]; then
+  # Update the path when POOL_NAME is populated
+  config_path="/mnt/configs"
+else
+  # Use the original path when POOL_NAME is empty
+  config_path="/configs/"
+fi
 
 # Prowlarr API Key extract
 # Check if the configuration file exists
-sleep 10
-if [ -f "$POOL_NAME/configs/prowlarr/config.xml" ]; then
+if [ -f "$config_path/prowlarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$POOL_NAME/configs/prowlarr/config.xml")
+  prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/prowlarr/config.xml")
 
   if [ -n "$prowlarr_api_key" ]; then
     echo "Prowlarr API Key: $prowlarr_api_key"
@@ -367,12 +371,12 @@ else
   echo "Prowlarr configuration file not found."
 fi
 sleep 5
+
 # Sonarr API Key extract
 # Check if the configuration file exists
-if [ -f "$POOL_NAME/configs/sonarr/config.xml" ]; then
-
+if [ -f "$config_path/sonarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  sonarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$POOL_NAME/configs/sonarr/config.xml")
+  sonarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/sonarr/config.xml")
 
   if [ -n "$sonarr_api_key" ]; then
     echo "Sonarr API Key: $sonarr_api_key"
@@ -389,10 +393,9 @@ fi
 
 # Radarr API Key extract
 # Check if the configuration file exists
-if [ -f "$POOL_NAME/configs/radarr/config.xml" ]; then
-
+if [ -f "$config_path/radarr/config.xml" ]; then
   # Extract the API key using grep and awk
-  radarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$POOL_NAME/configs/radarr/config.xml")
+  radarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$config_path/radarr/config.xml")
 
   if [ -n "$radarr_api_key" ]; then
     echo "Radarr API Key: $radarr_api_key"
@@ -406,6 +409,7 @@ if [ -f "$POOL_NAME/configs/radarr/config.xml" ]; then
 else
   echo "Radarr configuration file not found."
 fi
+
 
 # Set the root folder for Sonarr
 curl "http://localhost:8989/api/v3/rootFolder" -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Api-Key: $SONARR_API_KEY" --data-raw '{"path":"/media/tv"}'
@@ -542,8 +546,8 @@ WebUI\Username=admin
 AutoDownloader\DownloadRepacks=true
 "
 
-echo "$new_config" > "$POOL_NAME/configs/qbit/config/qBittorrent.conf"
-echo "$wireguard_conf" > "$POOL_NAME/configs/qbit/wireguard/wg0.conf"
+echo "$new_config" > "$config_path/qbit/config/qBittorrent.conf"
+echo "$wireguard_conf" > "$config_path/qbit/wireguard/wg0.conf"
 sudo docker start qbittorrent
 sleep 3
 
@@ -717,7 +721,7 @@ chown apps:apps -R /configs/recyclarr
 sudo docker exec recyclarr recyclarr config create
 
 
-cat <<EOF > $POOL_NAME/configs/recyclarr/recyclarr.yml
+cat <<EOF > $config_path/recyclarr/recyclarr.yml
 # Configuration specific to Sonarr
 sonarr:
   series:
