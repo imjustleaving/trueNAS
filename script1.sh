@@ -8,8 +8,8 @@ fi
 
 
 #variables for external mount point
-TRUENAS_IP=192.168.1.179
-POOL_NAME=/tank
+TRUENAS_IP=
+POOL_NAME=/
 
 #discord variable
 DISCORD_WEBHOOK=
@@ -20,14 +20,14 @@ wireguard_conf="
 
 [Interface]
 # Device: 
-PrivateKey = AJ3vZCBA1MbMjEhvkoCXbiS3M5IVEDkiTsx0HZjsyXw=
-Address = 10.68.93.45/32
+PrivateKey = 
+Address = 
 DNS=1.1.1.1
 
 [Peer]
-PublicKey = bPfJDdgBXlY4w3ACs68zOMMhLUbbzktCKnLOFHqbxl4=
+PublicKey = 
 AllowedIPs = 0.0.0.0/0
-Endpoint = 31.171.153.66:51820
+Endpoint = 
 "
 
 #docker container settings
