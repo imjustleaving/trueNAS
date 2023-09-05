@@ -8,8 +8,8 @@ fi
 
 
 #variables for external mount point
-TRUENAS_IP=
-POOL_NAME=
+TRUENAS_IP=192.168.1.179
+POOL_NAME=/tank
 
 #discord variable
 DISCORD_WEBHOOK=
@@ -20,20 +20,21 @@ wireguard_conf="
 
 [Interface]
 # Device: 
-PrivateKey = 
-Address = 
+PrivateKey = AJ3vZCBA1MbMjEhvkoCXbiS3M5IVEDkiTsx0HZjsyXw=
+Address = 10.68.93.45/32
 DNS=1.1.1.1
 
 [Peer]
-PublicKey = 
+PublicKey = bPfJDdgBXlY4w3ACs68zOMMhLUbbzktCKnLOFHqbxl4=
 AllowedIPs = 0.0.0.0/0
-Endpoint = 
+Endpoint = 31.171.153.66:51820
 "
 
 #docker container settings
 TIMEZONE=America/New_York
 PUID=568
 PGID=568
+
 # Set CONFIG_PATH based on conditions
 if [ -n "$POOL_NAME" ]; then
   CONFIG_PATH=/mnt/configs
@@ -136,21 +137,32 @@ sudo groupadd -g 568 apps
 sudo useradd -u 568 -g 568 -m -s /bin/bash apps
 echo "User & Group apps created!"
 
-#Mount TrueNAS NFS Share
+# Mount TrueNAS NFS Share
 if [ -n "$TRUENAS_IP" ]; then
   sudo apt-get install nfs-common -y
-  echo "$TRUENAS_IP:/mnt$POOL_NAME /mnt nfs defaults 0 0" | sudo tee -a /etc/fstab
+  echo "$TRUENAS_IP:/mnt$POOL_NAME /mnt nfs defaults 0 0" >> /etc/fstab
   sudo mount -a
   echo "Mounted TrueNAS!"
 else
   echo "TRUENAS_IP variable is not defined. Skipping mounting of TrueNAS NFS share."
 fi
 
+
 #Build media directory structure
-sudo mkdir -p /media/{downloads,movies,tv}
-sudo mkdir /configs
-sudo chown -R apps:apps /media/{downloads,movies,tv}
-sudo chown -R apps:apps /configs
+
+# Check if the POOL_NAME variable is not populated
+if [ ! -n "$POOL_NAME" ]; then
+    sudo mkdir -p /media/{downloads,movies,tv}
+    sudo mkdir /configs
+    sudo chown -R apps:apps /media/{downloads,movies,tv}
+    sudo chown -R apps:apps /configs
+
+else
+
+    sudo mkdir /mnt/configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
+    sudo chown -R apps:apps /mnt/configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
+fi
+
 
 echo "Media directory structure created!"
 
@@ -165,6 +177,7 @@ version: "2.1"
 services:
   emby:
     image: lscr.io/linuxserver/emby:latest
+    user: apps:apps
     container_name: emby
     environment:
       - PUID=${PUID}
@@ -706,8 +719,6 @@ sudo docker start unpackerr
 
 
 #recyclarr setup
-sudo chown apps:apps -R $CONFIG_PATH/recyclarr
-
 
 sudo docker exec recyclarr recyclarr config create
 
