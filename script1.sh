@@ -715,7 +715,7 @@ sudo docker start unpackerr
 
 
 #recyclarr setup
-chown apps:apps -R /configs/recyclarr
+chown apps:apps -R $config_path/recyclarr
 
 
 sudo docker exec recyclarr recyclarr config create
