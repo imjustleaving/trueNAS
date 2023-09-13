@@ -251,7 +251,7 @@ curl "http://localhost:9696/api/v1/downloadclient" -X POST -H "Accept: applicati
 
 sudo docker stop unpackerr
 
-cat <<EOT > $POOL_NAME/configs/unpackerr/unpackerr.conf
+cat <<EOT > /configs/unpackerr/unpackerr.conf
 ##      Unpackerr Example Configuration File      ##
 ## The following values are application defaults. ##
 ## Environment Variables may override all values. ##
