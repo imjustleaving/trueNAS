@@ -1,12 +1,3 @@
-#docker env variables
-TIMEZONE=America/New_York
-PUID=568
-PGID=568
-CONFIG_PATH=/configs
-TV_PATH=/media/tv
-MOVIES_PATH=/media/movies
-DOWNLOADS_PATH=/media/downloads
-
 version: "2.1"
 services:
   emby:
@@ -14,13 +5,13 @@ services:
     user: apps:apps
     container_name: emby
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TIMEZONE}
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
     volumes:
-      - ${CONFIG_PATH}/emby:/config
-      - ${TV_PATH}:/media/tv
-      - ${MOVIES_PATH}:/media/movies
+      - /configs/emby:/config
+      - /media/tv:/media/tv
+      - /media/movies:/media/movies
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -35,7 +26,7 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
     ports:
       - "${PORT:-8191}:8191"
     restart: unless-stopped
@@ -47,12 +38,12 @@ services:
     container_name: jellyseerr
     environment:
       - LOG_LEVEL=debug
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
       - JELLYFIN_TYPE=emby
     ports:
       - 5055:5055
     volumes:
-      - ${CONFIG_PATH}/jellyseerr:/app/config
+      - /configs/jellyseerr:/app/config
     restart: unless-stopped
     networks:
       - arr
@@ -61,11 +52,11 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TIMEZONE}
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
     volumes:
-      - ${CONFIG_PATH}/prowlarr:/config
+      - /configs/prowlarr:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -79,18 +70,18 @@ services:
       - "8080:8080"
       - "8118:8118"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=568
+      - PGID=568
       - UMASK=002
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
       - VPN_ENABLED=true
       - VPN_LAN_NETWORK=192.168.1.0/24
       - VPN_CONF=wg0
       - VPN_ADDITIONAL_PORTS
       - PRIVOXY_ENABLED=false
     volumes:
-      - ${CONFIG_PATH}/qbit:/config
-      - ${DOWNLOADS_PATH}:/media/downloads
+      - /configs/qbit:/config
+      - /media/downloads:/media/downloads
     cap_add:
       - NET_ADMIN
     dns:
@@ -105,13 +96,13 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TIMEZONE}
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
     volumes:
-      - ${CONFIG_PATH}/radarr:/config
-      - ${MOVIES_PATH}:/media/movies 
-      - ${DOWNLOADS_PATH}:/media/downloads 
+      - /configs/radarr:/config
+      - /media/movies:/media/movies 
+      - /media/downloads:/media/downloads 
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -123,9 +114,9 @@ services:
     container_name: recyclarr
     user: 568:568
     volumes:
-      - ${CONFIG_PATH}/recyclarr:/config
+      - /configs/recyclarr:/config
     environment:
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
     networks:
       - arr
 
@@ -133,13 +124,13 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TIMEZONE}
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
     volumes:
-      - ${CONFIG_PATH}/sonarr:/config
-      - ${TV_PATH}:/media/tv #optional
-      - ${DOWNLOADS_PATH}:/media/downloads #optional
+      - /configs/sonarr:/config
+      - /media/tv:/media/tv #optional
+      - /media/downloads:/media/downloads #optional
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -149,7 +140,7 @@ services:
   watchtower:
     image: containrrr/watchtower
     environment:
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_INCLUDE_STOPPED=true
       - WATCHTOWER_SCHEDULE=0 0 3 * * *
@@ -164,9 +155,9 @@ services:
       - PUID=568
       - PGID=568
       - UMASK=002
-      - TZ=${TIMEZONE}
+      - TZ=America/New_York
     volumes:
-      - ${CONFIG_PATH}/unpackerr:/config
+      - /configs/unpackerr:/config
     networks:
       - arr
     security_opt:
