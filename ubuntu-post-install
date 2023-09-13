@@ -22,6 +22,11 @@ apt autoremove -y
 apt autoclean
 echo "Update Complete."
 
+# Add apps user and group
+sudo groupadd -g 568 apps
+sudo useradd -u 568 -g 568 -m -s /bin/bash apps
+echo "User & Group apps created!"
+
 # Change directory to /tmp
 
 cd /tmp
@@ -72,12 +77,6 @@ docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /va
 
 echo "Portainer Installed."
 echo "Done!"
-
-# Add apps user and group
-sudo groupadd -g 568 apps
-sudo useradd -u 568 -g 568 -m -s /bin/bash apps
-echo "User & Group apps created!"
-
 
 #Build media directory structure
 
