@@ -29,12 +29,6 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = 
 "
 
-# Define qBittorrent parameters
-qbittorrent_url="http://qbittorrent:8080"
-qbittorrent_username="admin"
-qbittorrent_password="adminadmin"
-
-
 # Prowlarr API Key extract
 
   prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/prowlarr/config.xml")
