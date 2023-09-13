@@ -387,6 +387,8 @@ sudo docker start unpackerr
 
 #recyclarr setup
 
+sudo chown -R apps:apps /configs/recyclarr
+
 sudo docker exec recyclarr recyclarr config create
 
 
