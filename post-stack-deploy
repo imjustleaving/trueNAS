@@ -29,8 +29,8 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = 
 "
 
-# Prowlarr API Key extract
-
+# Check if the Prowlarr configuration file exists
+if [ -f "$CONFIG_PATH/prowlarr/config.xml" ]; then
   prowlarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/prowlarr/config.xml")
 
   if [ -n "$prowlarr_api_key" ]; then
@@ -47,8 +47,8 @@ else
 fi
 sleep 5
 
-# Sonarr API Key extract
-
+# Check if the Sonarr configuration file exists
+if [ -f "$CONFIG_PATH/sonarr/config.xml" ]; then
   sonarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/sonarr/config.xml")
 
   if [ -n "$sonarr_api_key" ]; then
@@ -64,8 +64,8 @@ else
   echo "Sonarr configuration file not found."
 fi
 
-# Radarr API Key extract
-
+# Check if the Radarr configuration file exists
+if [ -f "$CONFIG_PATH/radarr/config.xml" ]; then
   radarr_api_key=$(grep -oP '(?<=<ApiKey>).*?(?=</ApiKey>)' "$CONFIG_PATH/radarr/config.xml")
 
   if [ -n "$radarr_api_key" ]; then
