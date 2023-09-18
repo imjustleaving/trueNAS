@@ -245,7 +245,7 @@ curl "http://localhost:9696/api/v1/downloadclient" -X POST -H "Accept: applicati
 
 sudo docker stop unpackerr
 
-cat <<EOT > /configs/unpackerr/unpackerr.conf
+cat <<EOT > $CONFIG_PATH/unpackerr/unpackerr.conf
 ##      Unpackerr Example Configuration File      ##
 ## The following values are application defaults. ##
 ## Environment Variables may override all values. ##
@@ -387,7 +387,7 @@ sudo docker start unpackerr
 
 #recyclarr setup
 
-sudo chown -R apps:apps /configs/recyclarr
+sudo chown -R apps:apps $CONFIG_PATH/recyclarr
 
 sudo docker exec recyclarr recyclarr config create
 
