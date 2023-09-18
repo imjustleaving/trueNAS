@@ -148,6 +148,10 @@ else
 fi
 
 
+#create docker network called group
+sudo docker network create arr && echo "Docker network 'arr' created."
+
+
 #Build media directory structure
 
 # Check if the POOL_NAME variable is not populated
@@ -166,8 +170,6 @@ fi
 
 echo "Media directory structure created!"
 
-#create docker network called group
-sudo docker network create arr && echo "Docker network 'arr' created."
 
 #deploy arr stack containers
 
