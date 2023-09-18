@@ -177,7 +177,6 @@ version: "2.1"
 services:
   emby:
     image: lscr.io/linuxserver/emby:latest
-    user: apps:apps
     container_name: emby
     environment:
       - PUID=${PUID}
