@@ -569,7 +569,7 @@ curl "http://localhost:9696/api/v1/downloadclient" -X POST -H "Accept: applicati
 
 sudo docker stop unpackerr
 
-cat <<EOT > "${TRUENAS_IP:+/mnt}/configs/unpackerr/unpackerr.conf"
+cat <<EOT > "/configs/unpackerr/unpackerr.conf"
 ##      Unpackerr Example Configuration File      ##
 ## The following values are application defaults. ##
 ## Environment Variables may override all values. ##
@@ -712,7 +712,7 @@ sudo docker start unpackerr
 #recyclarr setup
 
 sudo docker exec recyclarr recyclarr config create
-sudo -u apps chmod 777 $CONFIG_PATH/recyclarr/recyclarr.yml
+#sudo -u apps chmod 777 $CONFIG_PATH/recyclarr/recyclarr.yml
 
 cat <<EOF > $CONFIG_PATH/recyclarr/recyclarr.yml
 # Configuration specific to Sonarr
