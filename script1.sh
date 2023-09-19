@@ -35,12 +35,9 @@ TIMEZONE=America/New_York
 PUID=568
 PGID=568
 
-# Set CONFIG_PATH based on conditions
-if [ -n "$POOL_NAME" ]; then
-  CONFIG_PATH=/mnt/configs
-else
+# Set CONFIG_PATH 
   CONFIG_PATH=/configs
-fi
+
 
 # Set MOVIES_PATH based on conditions
 if [ -n "$POOL_NAME" ]; then
@@ -154,9 +151,9 @@ sudo docker network create arr && echo "Docker network 'arr' created."
 
 #Build media directory structure
     sudo mkdir -p /media/{downloads,movies,tv}
-    sudo mkdir /configs
+    sudo mkdir /configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
     sudo chown -R apps:apps /media/{downloads,movies,tv}
-    sudo chown -R apps:apps /configs
+    sudo chown -R apps:apps /configs /configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
 
 echo "Media directory structure created!"
 
