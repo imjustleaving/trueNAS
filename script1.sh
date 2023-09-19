@@ -715,6 +715,7 @@ sudo docker start unpackerr
 #recyclarr setup
 
 sudo docker exec recyclarr recyclarr config create
+sudo chmod 777 $CONFIG_PATH/recyclarr/recyclarr.yml
 
 
 cat <<EOF > $CONFIG_PATH/recyclarr/recyclarr.yml
