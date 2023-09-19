@@ -153,20 +153,10 @@ sudo docker network create arr && echo "Docker network 'arr' created."
 
 
 #Build media directory structure
-
-# Check if the POOL_NAME variable is not populated
-if [ ! -n "$POOL_NAME" ]; then
     sudo mkdir -p /media/{downloads,movies,tv}
     sudo mkdir /configs
     sudo chown -R apps:apps /media/{downloads,movies,tv}
     sudo chown -R apps:apps /configs
-
-else
-
-    sudo mkdir /mnt/configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
-    sudo chown -R apps:apps /mnt/configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
-fi
-
 
 echo "Media directory structure created!"
 
