@@ -338,6 +338,7 @@ networks:
 EOT
 
 sudo docker-compose -f arrstack.yaml up -d
+sleep 10
 
 
 
@@ -385,6 +386,8 @@ if [ -f "$CONFIG_PATH/sonarr/config.xml" ]; then
 else
   echo "Sonarr configuration file not found."
 fi
+
+sleep 5
 
 # Radarr API Key extract
 # Check if the configuration file exists
