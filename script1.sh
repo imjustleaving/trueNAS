@@ -151,7 +151,7 @@ sudo docker network create arr && echo "Docker network 'arr' created."
 
 #Build media directory structure
     sudo mkdir -p /media/{downloads,movies,tv}
-    sudo mkdir /configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
+    sudo mkdir -p /configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
     sudo chown -R apps:apps /media/{downloads,movies,tv}
     sudo chown -R apps:apps /configs /configs/{emby,jellyseerr,prowlarr,qbit,radarr,recyclarr,sonarr,unpackerr}
 
