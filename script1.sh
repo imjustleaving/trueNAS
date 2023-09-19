@@ -366,7 +366,7 @@ if [ -f "$CONFIG_PATH/prowlarr/config.xml" ]; then
 else
   echo "Prowlarr configuration file not found."
 fi
-sleep 5
+sleep 10
 
 # Sonarr API Key extract
 # Check if the configuration file exists
