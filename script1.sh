@@ -40,21 +40,21 @@ PGID=568
 
 
 # Set MOVIES_PATH based on conditions
-if [ -n "$POOL_NAME" ]; then
+if [ -n "$TRUENAS_IP" ]; then
   MOVIES_PATH=/mnt/media/movies
 else
   MOVIES_PATH=/media/movies
 fi
 
 # Set TV_PATH based on conditions
-if [ -n "$POOL_NAME" ]; then
+if [ -n "$TRUENAS_IP" ]; then
   TV_PATH=/mnt/media/tv
 else
   TV_PATH=/media/tv
 fi
 
 # Set DOWNLOADS_PATH based on conditions
-if [ -n "$POOL_NAME" ]; then
+if [ -n "TRUENAS_IP" ]; then
   DOWNLOADS_PATH=/mnt/media/downloads
 else
   DOWNLOADS_PATH=/media/downloads
