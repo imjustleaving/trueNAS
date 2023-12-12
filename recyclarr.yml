@@ -1,8 +1,8 @@
 sonarr:
   series:
     # Set the URL/API Key to your actual instance
-    base_url: http://sonarr.ix-sonarr.svc.cluster.local:30001
-    api_key: deb0da3c4f4f4dcf87be1dd27852e3e8
+    base_url: 
+    api_key: 
 
     # Quality definitions from the guide to sync to Sonarr. Choices: series, anime
     quality_definition:
@@ -26,8 +26,8 @@ sonarr:
 # Configuration specific to Radarr.
 radarr:
  uhd-bluray-web:
-    base_url: http://radarr.ix-radarr.svc.cluster.local:30000
-    api_key: 496d1977e6ec463e94bb93ba0c024590
+    base_url: 
+    api_key: 
 
     include:
      # Comment out any of the following includes to disable them
